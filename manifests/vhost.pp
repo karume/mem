@@ -4,6 +4,7 @@ class midonet_mem::vhost {
   include apache
 
   $docroot = $midonet_mem::params::mem_install_path
+  $mem_package = $midonet_mem::params::mem_package
   $proxy_pass = [
     { 'path' => "/$midonet_mem::params::api_namespace",
       'url'  => "$midonet_mem::params::api_host"
@@ -13,7 +14,8 @@ class midonet_mem::vhost {
   apache::vhost { 'midonet-mem':
     port       => '80',
     docroot    => $docroot,
-    proxy_pass => $proxy_pass
+    proxy_pass => $proxy_pass,
+    require    => Package["$mem_package"]
   }
 
 }
