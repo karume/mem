@@ -1,0 +1,33 @@
+* Packages for both RHEL and Debian-based
+*
+ ***** RHEL: midonet-manager
+ ***** DEBIAN: midonet-manager
+*
+* Default installation path:
+*
+ ***** /var/www/html/midonet-manager
+*
+* Config file: (erb)
+*
+ ***** Doc: http://docs.midokura.com/docs/latest/manager-guide/content/configuration.html
+ ***** name and path: ${installation_path}/config/client.js
+ ***** contents:
+                {
+                  "api_host": "http://127.0.0.1:8080",
+                  "login_host": "http://127.0.0.1:8080",
+                  "trace_api_host": "http://127.0.0.1:8080",
+                  "traces_ws_url": "ws://127.0.0.1:8460",
+                  "api_namespace": "midonet-api",
+                  "api_version": "1.9",
+                  "api_token": keystone_token, # or false
+                  "agent_config_api_host": "http://127.0.0.1:8459",
+                  "agent_config_api_namespace": "conf",
+                  "poll_enabled": true
+                }
+ ***** host:port must be the same as in the MidoNet API configuration file '/usr/share/midonet-api/WEB-INF/web.xml':
+
+                <context-param>
+                    <param-name>rest_api-base_uri</param-name>
+                    <param-value>http://host:port/midonet-api</param-value>
+                </context-param>
+
