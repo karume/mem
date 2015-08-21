@@ -1,17 +1,18 @@
 {
   "name": "midonet-midonet_mem",
-  "version": "2015.6.0",
+  "version": "1.0.0",
   "author": "MidoNet",
-  "summary": "Configure and install MidoNet Enterprise Manager",
+  "summary": "Configure and install Midokura Enterprise MidoNet",
   "license": "Apache-2.0",
   "source": "https://github.com/midonet/puppet-midonet-mem",
   "project_page": "https://github.com/midonet/puppet-midonet-mem/blob/master/README.md",
   "issues_url": "https://midonet.atlassian.net/projects/PUP",
   "dependencies": [
     {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"},
-    {"name":"midonet-midonet","version_requirement":">= 2015.3.0"}
+    {"name":"midonet-midonet","version_requirement":">= 2015.3.0"},
+    {"name":"puppetlabs-apache","version_requirement":">= 1.6.0"}
   ],
-  "tags": ["openstack", "sdn", "midonet"],
+  "tags": ["openstack", "sdn", "midonet", "enterprise"],
   "operatingsystem_support": [
     {
     "operatingsystem": "RedHat",
