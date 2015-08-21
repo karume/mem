@@ -50,7 +50,7 @@ class midonet_mem::repository::ubuntu (
     }
 
     # Dummy exec to wrap apt_update
-    exec {'update-midonet-repos':
+    exec {'update-mem-repos':
       command => '/bin/true',
       require => [Exec['apt_update'],
                   Apt::Source['midokura_enterprise_midonet']]
