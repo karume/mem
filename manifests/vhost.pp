@@ -12,10 +12,12 @@ class midonet_mem::vhost {
   ]
 
   apache::vhost { 'midonet-mem':
-    port       => '80',
-    docroot    => $docroot,
-    proxy_pass => $proxy_pass,
-    require    => Package["$mem_package"]
+    port            => '80',
+    docroot         => $docroot,
+    proxy_pass      => $proxy_pass,
+    redirect_source => '/midonet-manager',
+    redirect_dest   => $docroot,
+    require         => Package["$mem_package"]
   }
 
 }

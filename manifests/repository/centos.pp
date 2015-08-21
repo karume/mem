@@ -25,7 +25,7 @@
 class midonet_mem::repository::centos (
   $mem_repo_user = undef,
   $mem_repo_password = undef,
-  $mem_repo,
+  $midonet_key,
   $midonet_thirdparty_repo,
   $midonet_stage,
   $manage_distro_repo,
