@@ -16,19 +16,19 @@
     # error, crit, alert, emerg.
     # It is also possible to configure the loglevel for particular
     # modules, e.g.
-    #LogLevel info ssl:warn
+    LogLevel info ssl:warn
     ErrorLog ${APACHE_LOG_DIR}/error.log
     CustomLog ${APACHE_LOG_DIR}/access.log combined
 
-    #LoadModule headers_module modules/mod_headers.so
-    #LoadModule proxy_module modules/mod_proxy.so
-    #LoadModule proxy_http_module modules/mod_proxy_http.so
-    #ProxyPass /midonet-api http://localhost:8080/midonet-api
-    #ProxyPassReverse /midonet-api http://localhost:8080/midonet-api
+    LoadModule headers_module modules/mod_headers.so
+    LoadModule proxy_module modules/mod_proxy.so
+    LoadModule proxy_http_module modules/mod_proxy_http.so
+    ProxyPass /midonet-api http://localhost:8080/midonet-api
+    ProxyPassReverse /midonet-api http://localhost:8080/midonet-api
 
-    #Header set Access-Control-Allow-Origin *
-    #Header append Access-Control-Allow-Headers Content-Type
-    #Header append Access-Control-Allow-Headers X-Auth-Token
+    Header set Access-Control-Allow-Origin *
+    Header append Access-Control-Allow-Headers Content-Type
+    Header append Access-Control-Allow-Headers X-Auth-Token
 </VirtualHost>
 
 # vim: syntax=apache ts=4 sw=4 sts=4 sr noet

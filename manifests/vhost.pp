@@ -1,12 +1,17 @@
 class midonet_mem::vhost {
 
+  include ::midonet_mem::params
+  $proxy_pass = [
+    { 'path' => "/$midonet_mem::params::api_namespace",
+      'url'  => "$midonet_mem::params::api_host"
+    }
+  ]
+
   include apache
   apache::vhost { 'midonet-mem':
-    port                     => '80',
-    docroot                  => '/var/www/html/midonet-manager',
-    redirect_source          => '/midonet-api',
-    proxy_dest               => 'http://localhost:8080/midonet-api',
-    proxy_dest_reverse_match => '/midonet-api'
+    port       => '80',
+    docroot    => "$midonet_mem::params::mem_install_path",
+    proxy_pass => $proxy_pass
   }
 
 }
