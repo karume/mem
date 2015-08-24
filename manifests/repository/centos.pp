@@ -33,11 +33,11 @@ class midonet_mem::repository::centos (
     # Adding repository for CentOS
     notice('Adding midonet sources for RedHat-like distribution')
 
-    $mem_repo = "http://${mem_repo_user}:${mem_repo_password}@yum.midokura.com/repo/v1.9/stable/RHEL/7/"
+    $mem_repo = "http://${mem_repo_user}:${mem_repo_password}@yum.midokura.com/repo/v1.9/stable/RHEL"
     $mem_key_url = "http://${mem_repo_user}:${mem_repo_password}@yum.midokura.com/repo/RPM-GPG-KEY-midokura"
 
     yumrepo { 'midokura_enterprise_midonet':
-      baseurl  => "${mem_repo}/${::operatingsystemmajrelease}/${midonet_stage}",
+      baseurl  => "${mem_repo}/${::operatingsystemmajrelease}",
       descr    => 'Midonet base repo',
       enabled  => 1,
       gpgcheck => 1,
@@ -45,18 +45,17 @@ class midonet_mem::repository::centos (
       timeout  => 60
     }
 
-    if $manage_epel_repo == true {
+    if $manage_epel_repo == true and ! defined(Package['epel-release']) {
       package { 'epel-release':
         ensure   => installed
       }
     }
 
-    exec {'update-midonet-repos':
+    exec {'update-mem-repos':
       command => '/usr/bin/yum clean all && /usr/bin/yum makecache'
     }
 
-    Yumrepo<| |> -> Exec<| command == 'update-midonet-repos' |>
-    Package<| |> -> Exec<| command == 'update-midonet-repos' |>
+    Yumrepo<| |> -> Exec<| command == 'update-mem-repos' |>
 
 }
 
