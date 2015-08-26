@@ -150,5 +150,27 @@ class midonet_mem (
 
   include ::midonet_mem::vhost
 
+  # Add zookeeper
+  class { '::midonet::zookeeper': }
+
+  # Add cassandra
+  class { '::midonet::cassandra': }
+
+  # Add midonet-agent
+  class { '::midonet::midonet_agent':
+    zk_servers => [{
+        'ip' => $::ipaddress}
+        ],
+    require    => [Class['::midonet::cassandra'], Class['::midonet::zookeeper']]
+  }
+
+  # Add midonet-api
+  class { '::midonet::midonet_api':
+    zk_servers =>  [{'ip' => $::ipaddress}]
+  }
+
+  # Add midonet-cli
+  class { '::midonet::midonet_cli': }
+
 }
 
