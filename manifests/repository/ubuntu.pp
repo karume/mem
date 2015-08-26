@@ -72,7 +72,6 @@ zg==
     Exec['apt_update'] -> Package<| |>
 
     $mem_repo = "http://${mem_repo_user}:${mem_repo_password}@apt.midokura.com/midonet/v1.9/stable"
-    $mem_key_url = "https://${mem_repo_user}:${mem_repo_password}@apt.midokura.com/packages.midokura.key"
 
     apt::source { 'midokura_enterprise_midonet':
       comment     => 'Midokura Enterprise MidoNet apt repository',
