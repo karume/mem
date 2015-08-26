@@ -13,11 +13,12 @@ class midonet_mem::vhost {
 
   apache::vhost { 'midonet-mem':
     port            => '80',
-    docroot         => $docroot,
+    servername      => "http://$::ipaddress",
+    docroot         => '/var/www/html',
     proxy_pass      => $proxy_pass,
     redirect_source => '/midonet-manager',
     redirect_dest   => $docroot,
-    require         => Package["$mem_package"]
+    require         => Package["$mem_package"],
   }
 
 }
