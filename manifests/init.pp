@@ -11,13 +11,13 @@
 #   Installation path of the Midokura Enterprise MidoNet (MEM) package
 #
 # [api_host]
-#   Configures the MidoNet REST API’s host:port combination. This can be either
-#   the API host’s host name and Tomcat port, or if proxied, e.g via Apache,
+#   Configures the MidoNet REST API's host:port combination. This can be either
+#   the API host's host name and Tomcat port, or if proxied, e.g via Apache,
 #   the corresponding proxy host name and port.
 #   e.g. "api_host": "http://host:port"
 #
 # [login_host]
-#   Configures the authentication host’s host:port combination. Usually your
+#   Configures the authentication host's host:port combination. Usually your
 #   authentication server, e.g. Keystone, is accessible from the same address as
 #   the MidoNet REST API, so the host:port combination should be the same as for
 #   the API host ("api_host"). Should the authentication server be located on a
@@ -27,7 +27,7 @@
 # [trace_api_host]
 #   Configures the trace requests management API host:port combination. It is
 #   usually the same as the "api_host" but could be setup to run on a different
-#   server. This can be either the API host’s host name and Tomcat port, or if
+#   server. This can be either the API host's host name and Tomcat port, or if
 #   proxied, e.g via Apache, the corresponding proxy host name and port.
 #   e.g. "trace_api_host": "http://host:port"
 #
@@ -54,7 +54,7 @@
 #
 # [poll_enabled]
 #   The Auto Polling will seamlessly refresh Midonet Manager data periodically.
-#   It is enabled by default and can be disabled in Midonet Manager’s Settings
+#   It is enabled by default and can be disabled in Midonet Manager's Settings
 #   section directly through the UI. This will only disable it for the duration
 #   of the current session. It can also be disabled permanently by changing the
 #   'poll_enabled' parameter to 'false'
