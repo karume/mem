@@ -37,8 +37,8 @@
 
 class midonet_mem::repository (
   $mem_repo_user = undef,
-  $mem_repo_password = undef
-) {
+  $mem_repo_password = undef,
+){
 
   include ::midonet_mem::params
 
