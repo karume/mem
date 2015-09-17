@@ -72,18 +72,45 @@
 #
 # === Examples
 #
-# This class should be called by using 'include' if data is available in hiera:
+# This class can be called by using 'include' and it will inherits the default
+# data from 'midonet_mem::params' class or Hiera:
 #
-#   include midonet_mem
+#   include ::midonet_mem::manager
 #
-# Otherwise, it must be called by using 'class' specifying parameters and
-# values:
+# Data can be added to Hiera in order to override the default values specified
+# in 'midonet_mem::params':
 #
-# class { '::midonet_mem':
-#   mem_repo_user     => 'username',
-#   mem_repo_password => 'password',
-#   api_host          => 'http://localhost:8080',
-# }
+#   midonet_mem::manager::mem_package: 'midonet-manager'
+#   midonet_mem::manager::mem_install_path: '/var/www/html/midonet-manager'
+#   midonet_mem::manager::api_host: 'http://localhost:8080'
+#   midonet_mem::manager::api_version: '1.9'
+#   midonet_mem::manager::api_token: '999888777666'
+#   midonet_mem::manager::api_namespace: 'midonet-api'
+#   midonet_mem::manager::login_host: 'http://localhost:8080'
+#   midonet_mem::manager::trace_api_host: 'http://localhost:8080'
+#   midonet_mem::manager::traces_ws_url: 'http://localhost:8460'
+#   midonet_mem::manager::agent_config_api_host: 'http://localhost:8459'
+#   midonet_mem::manager::agent_config_api_namespace: 'conf'
+#   midonet_mem::manager::poll_enabled: true
+#
+# Otherwise, it also can be called by using 'class' specifying parameters and
+# values, which will override the default values specified in 'midonet_mem::params'
+# class and Hiera:
+#
+#   class { '::midonet_mem::manager':
+#     mem_package                => 'midonet-manager',
+#     mem_install_path           => '/var/www/html/midonet-manager',
+#     api_host                   => 'http://localhost:8080',
+#     api_version                => '1.9',
+#     api_token                  => '999888777666',
+#     api_namespace              => 'midonet-api',
+#     login_host                 => 'http://localhost:8080',
+#     trace_api_host             => 'http://localhost:8080',
+#     traces_ws_url              => 'http://localhost:8460',
+#     agent_config_api_host      => 'http://localhost:8459',
+#     agent_config_api_namespace => 'conf',
+#     poll_enabled               => true,
+#   }
 #
 # === Authors
 #
@@ -104,22 +131,22 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+#
 class midonet_mem::manager (
 # Midonet Manager installation options
   $mem_package                = $::midonet_mem::params::mem_package,
   $mem_install_path           = $::midonet_mem::params::mem_install_path,
 # Midonet Manager configuration options
   $api_host                   = $::midonet_mem::params::api_host,
+  $api_version                = $::midonet_mem::params::api_version,
+  $api_token                  = $::midonet_mem::params::api_token,
+  $api_namespace              = $::midonet_mem::params::api_namespace,
   $login_host                 = $::midonet_mem::params::login_host,
   $trace_api_host             = $::midonet_mem::params::trace_api_host,
   $traces_ws_url              = $::midonet_mem::params::traces_ws_url,
-  $api_version                = $::midonet_mem::params::api_version,
-  $api_token                  = $::midonet_mem::params::api_token,
   $agent_config_api_host      = $::midonet_mem::params::agent_config_api_host,
-  $poll_enabled               = $::midonet_mem::params::poll_enabled,
-  $api_namespace              = $::midonet_mem::params::api_namespace,
   $agent_config_api_namespace = $::midonet_mem::params::agent_config_api_namespace,
+  $poll_enabled               = $::midonet_mem::params::poll_enabled,
 ) inherits midonet_mem::params {
 
   package { 'midonet-manager':
@@ -138,4 +165,6 @@ class midonet_mem::manager (
   }
 
   include ::midonet_mem::vhost
+
 }
+
