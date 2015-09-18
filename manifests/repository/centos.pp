@@ -23,40 +23,38 @@
 #
 
 class midonet_mem::repository::centos (
-  $mem_repo_user = undef,
-  $mem_repo_password = undef,
+  $repo_user     = undef,
+  $repo_password = undef,
   $midonet_key,
   $midonet_thirdparty_repo,
-  $midonet_stage,
   $manage_distro_repo,
-  $manage_epel_repo
-){
-  # Adding repository for CentOS
-  notice('Adding midonet sources for RedHat-like distribution')
+  $manage_epel_repo) {
+    # Adding repository for CentOS
+    notice('Adding midonet sources for RedHat-like distribution')
 
-  $mem_repo = "http://${mem_repo_user}:${mem_repo_password}@yum.midokura.com/repo/v1.9/stable/RHEL"
-  $mem_key_url = "http://${mem_repo_user}:${mem_repo_password}@yum.midokura.com/repo/RPM-GPG-KEY-midokura"
+    $mem_repo = "http://${repo_user}:${repo_password}@yum.midokura.com/repo/v1.9/stable/RHEL"
+    $mem_key_url = "http://${repo_user}:${repo_password}@yum.midokura.com/repo/RPM-GPG-KEY-midokura"
 
-  yumrepo { 'midokura_enterprise_midonet':
-    baseurl  => "${mem_repo}/${::operatingsystemmajrelease}",
-    descr    => 'Midonet base repo',
-    enabled  => 1,
-    gpgcheck => 1,
-    gpgkey   => $mem_key_url,
-    timeout  => 60
-  }
-
-  if $manage_epel_repo == true and ! defined(Package['epel-release']) {
-    package { 'epel-release':
-      ensure   => installed
+    yumrepo { 'midokura_enterprise_midonet':
+      baseurl  => "${mem_repo}/${::operatingsystemmajrelease}",
+      descr    => 'Midonet base repo',
+      enabled  => 1,
+      gpgcheck => 1,
+      gpgkey   => $mem_key_url,
+      timeout  => 60
     }
-  }
 
-  exec {'update-mem-repos':
-    command => '/usr/bin/yum clean all && /usr/bin/yum makecache'
-  }
+    if $manage_epel_repo == true and ! defined(Package['epel-release']) {
+      package { 'epel-release':
+        ensure   => installed
+      }
+    }
 
-  Yumrepo<| |> -> Exec<| command == 'update-mem-repos' |>
+    exec {'update-mem-repos':
+      command => '/usr/bin/yum clean all && /usr/bin/yum makecache'
+    }
+
+    Yumrepo<| |> -> Exec<| command == 'update-mem-repos' |>
 
 }
 

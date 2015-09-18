@@ -1,52 +1,70 @@
 # == Class: midonet_mem::repository
 #
-# Full description of class midonet_mem here.
+# This class configures the needed repositories to be able to download and
+# install Midokura Enterprise MidoNet packages for both Debian-like and
+# RedHat-like OS
 #
 # === Parameters
 #
-# Document parameters here.
+# [*repo_user*]
+#   The username of the Midokura Enterprise MidoNet repository
 #
-# [*sample_parameter*]
-#   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
-#
-# === Variables
-#
-# Here you should define a list of variables that this module would require.
-#
-# [*sample_variable*]
-#   Explanation of how this variable affects the function of this class and if
-#   it has a default. e.g. "The parameter enc_ntp_servers must be set by the
-#   External Node Classifier as a comma separated list of hostnames." (Note,
-#   global variables should be avoided in favor of class parameters as
-#   of Puppet 2.6.)
+# [*repo_password*]
+#   The password of the username for the Midokura Enterprise MidoNet repository
 #
 # === Examples
 #
-#  class { 'midonet_mem':
-#    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
+# This class cannot be called by using 'include' since both 'repo_user' and
+# 'repo_password' params are mandatory to declare.
+#
+# Thus this class can be called by using 'class' and specifying the values for
+# both params:
+#
+#  class { 'midonet_mem::repository':
+#    repo_user     => 'username',
+#    repo_password => 'password',
+#  }
+#
+# Or instead, data can be added to Hiera:
+#
+#  midonet_mem::repository::repo_user: 'username'
+#  midonet_mem::repository::repo_password: 'password'
+#
+#  class { 'midonet_mem::repository':
+#    repo_user     => hiera('midonet_mem::repository::repo_user'),
+#    repo_password => hiera('midonet_mem::repository::repo_password'),
 #  }
 #
 # === Authors
 #
-# Author Name <author@domain.com>
+# Midonet (http://midonet.org)
 #
 # === Copyright
 #
-# Copyright 2015 Your name here, unless otherwise noted.
-
+# Copyright (c) 2015 Midokura SARL, All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
 class midonet_mem::repository (
-  $mem_repo_user = undef,
-  $mem_repo_password = undef,
-){
-
-  include ::midonet_mem::params
+  $repo_user     = undef,
+  $repo_password = undef,
+) inherits midonet_mem::params {
 
   case $::osfamily {
     'Debian': {
       class { '::midonet_mem::repository::ubuntu':
-        mem_repo_user           => $mem_repo_user,
-        mem_repo_password       => $mem_repo_password,
+        repo_user               => $repo_user,
+        repo_password           => $repo_password,
         midonet_thirdparty_repo => $midonet_mem::params::midonet_thirdparty_repo,
         midonet_key             => $midonet_mem::params::midonet_key,
         midonet_stage           => $midonet_mem::params::midonet_stage,
@@ -54,11 +72,10 @@ class midonet_mem::repository (
     }
     'RedHat': {
       class { '::midonet_mem::repository::centos':
-        mem_repo_user           => $mem_repo_user,
-        mem_repo_password       => $mem_repo_password,
+        repo_user               => $repo_user,
+        repo_password           => $repo_password,
         midonet_thirdparty_repo => $midonet_mem::params::midonet_thirdparty_repo,
         midonet_key             => $midonet_mem::params::midonet_key,
-        midonet_stage           => $midonet_mem::params::midonet_stage,
         manage_distro_repo      => $midonet_mem::params::manage_distro_repo,
         manage_epel_repo        => $midonet_mem::params::manage_epel_repo,
       }

@@ -1,32 +1,29 @@
 # == Class: midonet_mem
 #
-# Install and configure Midokura Enterprise MidoNet (MEM)
+# This class does not install nor configure Midokura Enterprise Midonet by
+# itself, but includes the needed class calls for both midonet & midonet_mem
+# Puppet modules in order to simplify and to serve as an example on how the
+# installation would be.
 #
 # === Parameters
-# [api_namespace]
-#   The default value for the api_namespace is set to midonet-api which usually
-#   does not have to be changed.
-#   Default value: "api_namespace": "midonet-api"
+# [*repo_user*]
+#   The username of the Midokura Enterprise MidoNet repository.
 #
-# [agent_config_api_namespace]
-#   The default value for the 'agent_config_api_namespace' is set to 'conf'
-#   which usually does not have to be changed.
-#   Default value: "api_namespace": "conf"
+# [*repo_password*]
+#   The password of the username for the Midokura Enterprise MidoNet repository
 #
 # === Examples
 #
-# This class should be called by using 'include' if data is available in hiera:
+# This class cannot be called by using 'include' since both 'repo_user' and
+# 'repo_password' params are mandatory to declare.
 #
-#   include midonet_mem
+# Thus this class should be called by using 'class' and specifying the values
+# for both params:
 #
-# Otherwise, it must be called by using 'class' specifying parameters and
-# values:
-#
-# class { '::midonet_mem':
-#   mem_repo_user     => 'username',
-#   mem_repo_password => 'password',
-#   api_host          => 'http://localhost:8080',
-# }
+#  class { '::midonet_mem':
+#    repo_user     => 'username',
+#    repo_password => 'password',
+#  }
 #
 # === Authors
 #
@@ -47,20 +44,19 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+#
 class midonet_mem (
-# Midonet Manager installation options
-  $mem_repo_user     = undef,
-  $mem_repo_password = undef,
+  $repo_user     = undef,
+  $repo_password = undef,
 ) inherits ::midonet_mem::params {
 
-  if $mem_repo_user and $mem_repo_password {
+  if $repo_user and $repo_password {
     class { '::midonet_mem::repository':
-      mem_repo_user     => $mem_repo_user,
-      mem_repo_password => $mem_repo_password
+      repo_user     => $repo_user,
+      repo_password => $repo_password
     }
   } else {
-    fail('You need to specify credentials: mem_repo_user and mem_repo_password.')
+    fail('You need to specify credentials: repo_user and repo_password.')
   }
 
   include ::midonet_mem::manager
