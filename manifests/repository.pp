@@ -60,6 +60,9 @@ class midonet_mem::repository (
   $repo_password = undef,
 ) inherits midonet_mem::params {
 
+  validate_string($repo_user)
+  validate_string($repo_password)
+
   case $::osfamily {
     'Debian': {
       class { '::midonet_mem::repository::ubuntu':

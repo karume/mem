@@ -27,24 +27,25 @@ class midonet_mem::repository::ubuntu (
   $repo_password = undef,
   $midonet_stage,
   $midonet_thirdparty_repo,
-  $midonet_key) {
-    notice('Adding MEM sources for Debian-like distribution')
+  $midonet_key
+) {
+  notice('Adding MEM sources for Debian-like distribution')
 
-    include apt
-    include apt::update
+  include apt
+  include apt::update
 
-# This is the ugliest approach ever, key_content only accepts an string as an
-# option :(
-# And we have to use key_content in the first place because 'key_source' does
-# not allow to use credentials within an https URI, even though it was fixed
-# in theory: https://tickets.puppetlabs.com/browse/MODULES-1119
-#
-# key_content: Supplies the entire GPG key. Useful in case the key can't be
-# fetched from a remote location and using a file resource is inconvenient.
-# Valid options: a string. Default: undef. Note This parameter is deprecated
-# and will be removed in a future release.
-#
-# https://github.com/puppetlabs/puppetlabs-apt#define-aptkey
+  # This is the ugliest approach ever, key_content only accepts an string as an
+  # option :(
+  # And we have to use key_content in the first place because 'key_source' does
+  # not allow to use credentials within an https URI, even though it was fixed
+  # in theory: https://tickets.puppetlabs.com/browse/MODULES-1119
+  #
+  # key_content: Supplies the entire GPG key. Useful in case the key can't be
+  # fetched from a remote location and using a file resource is inconvenient.
+  # Valid options: a string. Default: undef. Note This parameter is deprecated
+  # and will be removed in a future release.
+  #
+  # https://github.com/puppetlabs/puppetlabs-apt#define-aptkey
 
     $key_content = "-----BEGIN PGP PUBLIC KEY BLOCK-----
 Version: GnuPG v1
@@ -67,29 +68,29 @@ zg==
 =zF5K
 -----END PGP PUBLIC KEY BLOCK-----"
 
-    # Update the package list each time a package is defined. That takes
-    # time, but it ensures it will not fail for out of date repository info
-    Exec['apt_update'] -> Package<| |>
+  # Update the package list each time a package is defined. That takes
+  # time, but it ensures it will not fail for out of date repository info
+  Exec['apt_update'] -> Package<| |>
 
-    $mem_repo = "http://${repo_user}:${repo_password}@apt.midokura.com/midonet/v1.9/stable"
+  $mem_repo = "http://${repo_user}:${repo_password}@apt.midokura.com/midonet/v1.9/stable"
 
-    apt::source { 'midokura_enterprise_midonet':
-      comment     => 'Midokura Enterprise MidoNet apt repository',
-      location    => $mem_repo,
-      release     => $midonet_stage,
-      key         => $midonet_key,
-      key_content => $key_content,
-      include_src => false
-    }
+  apt::source { 'midokura_enterprise_midonet':
+    comment     => 'Midokura Enterprise MidoNet apt repository',
+    location    => $mem_repo,
+    release     => $midonet_stage,
+    key         => $midonet_key,
+    key_content => $key_content,
+    include_src => false
+  }
 
-    # Dummy exec to wrap apt_update
-    exec {'update-mem-repos':
-      command => '/bin/true',
-      require => [Exec['apt_update'],
-                  Apt::Source['midokura_enterprise_midonet']]
-    }
+  # Dummy exec to wrap apt_update
+  exec {'update-mem-repos':
+    command => '/bin/true',
+    require => [Exec['apt_update'],
+                Apt::Source['midokura_enterprise_midonet']]
+  }
 
-    Apt::Source<| |> -> Exec<| command == 'update-midonet-repos' |>
+  Apt::Source<| |> -> Exec<| command == 'update-midonet-repos' |>
 
 }
 

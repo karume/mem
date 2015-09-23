@@ -63,8 +63,8 @@
 #
 class midonet_mem::vhost (
   $apache_port = $midonet_mem::params::apache_port,
-  $servername  = $midonet_mem::params::servername,
   $docroot     = $midonet_mem::params::docroot,
+  $servername  = $midonet_mem::params::servername,
   $proxy_pass = [
     { 'path' => "/$midonet_mem::params::api_namespace",
       'url'  => "$midonet_mem::params::api_host",
@@ -76,6 +76,12 @@ class midonet_mem::vhost (
     },
   ],
 ) inherits midonet_mem::params {
+
+  validate_string($apache_port)
+  validate_string($docroot)
+  validate_string($servername)
+  validate_array($proxy_pass)
+  validate_array($directories)
 
   include ::apache
   include ::apache::mod::headers

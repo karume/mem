@@ -149,6 +149,20 @@ class midonet_mem::manager (
   $poll_enabled               = $::midonet_mem::params::poll_enabled,
 ) inherits midonet_mem::params {
 
+  validate_string($mem_package)
+  validate_string($mem_install_path)
+  validate_string($agent_config_api_host)
+  validate_string($agent_config_api_namespace)
+  validate_string($api_host)
+  validate_string($api_namespace)
+  validate_string($api_token)
+  validate_string($api_version)
+  validate_string($login_host)
+  validate_string($mem_config_file)
+  validate_string($trace_api_host)
+  validate_string($traces_ws_url)
+  validate_bool($poll_enabled)
+
   package { 'midonet-manager':
     ensure  => installed,
     name    => $mem_package,

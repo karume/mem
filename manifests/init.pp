@@ -50,6 +50,9 @@ class midonet_mem (
   $repo_password = undef,
 ) inherits ::midonet_mem::params {
 
+  validate_string($repo_user)
+  validate_string($repo_password)
+
   if $repo_user and $repo_password {
     class { '::midonet_mem::repository':
       repo_user     => $repo_user,
