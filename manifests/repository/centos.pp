@@ -26,13 +26,14 @@ class midonet_mem::repository::centos (
   $repo_user     = undef,
   $repo_password = undef,
   $midonet_key,
+  $midonet_stage,
   $midonet_thirdparty_repo,
   $manage_distro_repo,
   $manage_epel_repo) {
     # Adding repository for CentOS
     notice('Adding midonet sources for RedHat-like distribution')
 
-    $mem_repo = "http://${repo_user}:${repo_password}@yum.midokura.com/repo/v1.9/stable/RHEL"
+    $mem_repo = "http://${repo_user}:${repo_password}@yum.midokura.com/repo/v1.9/${midonet_stage}/RHEL"
     $mem_key_url = "http://${repo_user}:${repo_password}@yum.midokura.com/repo/RPM-GPG-KEY-midokura"
 
     yumrepo { 'midokura_enterprise_midonet':

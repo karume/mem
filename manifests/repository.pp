@@ -74,10 +74,11 @@ class midonet_mem::repository (
       class { '::midonet_mem::repository::centos':
         repo_user               => $repo_user,
         repo_password           => $repo_password,
-        midonet_thirdparty_repo => $midonet_mem::params::midonet_thirdparty_repo,
-        midonet_key             => $midonet_mem::params::midonet_key,
         manage_distro_repo      => $midonet_mem::params::manage_distro_repo,
         manage_epel_repo        => $midonet_mem::params::manage_epel_repo,
+        midonet_key             => $midonet_mem::params::midonet_key,
+        midonet_thirdparty_repo => $midonet_mem::params::midonet_thirdparty_repo,
+        midonet_stage           => $midonet_mem::params::midonet_stage,
       }
     }
     default: {

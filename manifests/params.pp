@@ -6,9 +6,10 @@ class midonet_mem::params {
   case $::osfamily {
     'RedHat': {
       $mem_package             = 'midonet-manager'
-      $midonet_key             = 'CBCBF7F7F25FECC4D636073CE0DDD6FF725F1F73'
       $manage_distro_repo      = true
       $manage_epel_repo        = true
+      $midonet_key             = 'CBCBF7F7F25FECC4D636073CE0DDD6FF725F1F73'
+      $midonet_stage           = 'stable'
       $midonet_thirdparty_repo = 'http://repo.midonet.org/misc/RHEL'
     }
 
